@@ -55,4 +55,5 @@
    printf("≈≈–Ú∫Û:\n");
    print(d,N);
    getch();
+   printf("hello,woeld");
 }
