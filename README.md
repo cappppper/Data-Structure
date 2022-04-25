@@ -56,5 +56,51 @@ typedef struct {
 
 这个地方之后双指针也是一个道理！
 
+-----
 
+**关于`scanf()`**
 
+今天写程序实践作业，用到`scanf()`时出现了一个小bug。于是重新复习了一下`scanf()`的机制
+
+当我们从键盘操作输入数据是，按下的每一个键都会被添加到缓冲区。包括回车（\n）所以当`scanf()`函数前有回车操作时，就会容易触发bug。
+
+`scanf("%d")`此时`scanf()`函数不会读取回车（\n）只会读取数字。但是当我们是`scanf("%c")`时，回车也算作一个字符，所以会被`scanf()`读取，这样就会导致我们没有办法输入我们想要的字符，以下是示例
+
+~~~c
+  printf("汽车驶入便道\n");
+            printf("该车辆车牌号为：");
+            scanf("%s",&car[i].license_plate_number);
+            EntrySidewalk(&Sidewalk,car[i]);
+            printf("汽车进入车库\n");
+            OutSidewalk(&Sidewalk,car[i]);
+            Warehousing(&Parking,car[i]);
+            time(&car[i].Entry_time);
+            printf("继续停车（S）还是汽车出库（O）\n");
+            scanf("%c",&a);
+~~~
+
+![image-20220425222537388](README.assets/image-20220425222537388.png)
+
+可以看到`scanf()`将123后面的回车读入，导致程序出错
+
+所以此时我们有两种解决方案
+
+1.用`getchar()`
+
+2.在%c前面加一个空格（ ）
+
+~~~c
+            printf("汽车驶入便道\n");
+            printf("该车辆车牌号为：");
+            scanf("%s",&car[i].license_plate_number);
+            EntrySidewalk(&Sidewalk,car[i]);
+            printf("汽车进入车库\n");
+            OutSidewalk(&Sidewalk,car[i]);
+            Warehousing(&Parking,car[i]);
+            time(&car[i].Entry_time);
+            printf("继续停车（S）还是汽车出库（O）\n");
+//            getchar();
+            scanf(" %c",&a);
+~~~
+
+![image-20220425222808273](README.assets/image-20220425222808273.png)
